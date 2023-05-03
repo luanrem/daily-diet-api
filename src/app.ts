@@ -8,5 +8,5 @@ export const app = fastify()
 app.register(cookie)
 
 app.register(usersRoutes, {
-  prefix: '/',
+  prefix: '/users',
 })
