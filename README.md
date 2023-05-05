@@ -52,7 +52,7 @@ So I will make as checkbox what need to be implemented and what I've already don
 
 - [x] It should be possible to create a user
 - [x] It should be possible to identify the user among the requests
-- [ ] It should be possible to register a meal made, with the following information:
+- [x] It should be possible to register a meal made, with the following information:
     
     *Meals must be related to a user.*
     
@@ -63,8 +63,8 @@ So I will make as checkbox what need to be implemented and what I've already don
 
 - [ ] It should be possible to edit a meal, being able to change all the above data
 - [ ] It should be possible to delete a meal
-- [ ] It should be possible to list all meals of a user
-- [ ] It should be possible to visualize a single meal
+- [x] It should be possible to list all meals of a user
+- [x] It should be possible to visualize a single meal
 - [ ] It should be possible to retrieve a user's metrics
     - Total number of registered meals
     - Total amount of meals within the diet

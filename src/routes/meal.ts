@@ -55,7 +55,6 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       const { id } = createNewMealParamSchema.parse(request.params)
 
-
       const meal = await knex('meals')
         .where({
           id,
@@ -64,5 +63,26 @@ export async function mealsRoutes(app: FastifyInstance) {
       return {
         meal
       }
+    })
+
+  app.get('/all',
+    {
+      preHandler: [checkSessionIdExists],
+    },
+    async (request, reply) => {
+
+      const { sessionId } = request.cookies
+
+      const user = await knex('users')
+        .where('session_id', sessionId)
+        .select()
+
+      console.log(user)
+
+      const meals = await knex('meals').where({
+        user_id: user[0].id
+      })
+
+      return { meals }
     })
 }
