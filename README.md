@@ -50,8 +50,8 @@ So I will make as checkbox what need to be implemented and what I've already don
 
 - Deve ser possível criar um usuário
 
-- [ ] It should be possible to create a user
-- [ ] It should be possible to identify the user among the requests
+- [x] It should be possible to create a user
+- [x] It should be possible to identify the user among the requests
 - [ ] It should be possible to register a meal made, with the following information:
     
     *Meals must be related to a user.*
