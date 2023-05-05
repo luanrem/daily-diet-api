@@ -62,7 +62,7 @@ So I will make as checkbox what need to be implemented and what I've already don
     - It's on the diet or not?
 
 - [ ] It should be possible to edit a meal, being able to change all the above data
-- [ ] It should be possible to delete a meal
+- [x] It should be possible to delete a meal
 - [x] It should be possible to list all meals of a user
 - [x] It should be possible to visualize a single meal
 - [ ] It should be possible to retrieve a user's metrics
