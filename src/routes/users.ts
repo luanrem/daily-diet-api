@@ -2,23 +2,41 @@ import { FastifyInstance } from "fastify";
 import { randomUUID } from 'node:crypto'
 import { knex } from "../database";
 import { z } from "zod";
+import { checkSessionIdExists } from "../middlewares/check-session-id-exists";
 
 
 export async function usersRoutes(app: FastifyInstance) {
+  app.addHook('preHandler', async (request, reply) => {
+    console.log(`[${request.method}] ${request.url}`)
+  })
 
-  app.get('/', async (request, reply) => {
-    console.log('Its working')
-    const createNewUser = await knex('users').insert({
-      id: randomUUID(),
-      name: 'Luan Roberto Estrada Martins',
-      email: 'luanrem@gmail.com'
-    }).returning('*')
+  app.get('/me',
+    {
+      preHandler: [checkSessionIdExists],
+    },
+    async (request, reply) => {
 
-    console.log(createNewUser)
-    const table = await knex('users').select('*')
-    console.log(table)
+      const { sessionId } = request.cookies
 
-    reply.send('Hello world')
+      const user = await knex('users')
+        .where('session_id', sessionId)
+        .select()
+
+      return {
+        user
+      }
+    })
+
+  app.get('/all', async (request, reply) => {
+    const users = await knex('users').select('*')
+
+    return {
+      users
+    }
+  })
+
+  app.delete('/all', async (request, reply) => {
+    await knex('users').delete('*')
   })
 
   app.post('/', async (request, reply) => {
@@ -29,12 +47,22 @@ export async function usersRoutes(app: FastifyInstance) {
 
     const { name, email } = createNewUserBodySchema.parse(request.body)
 
-    console.log('name, email', name, email)
+    let sessionId = request.cookies.sessionId
+
+    if (!sessionId) {
+      sessionId = randomUUID()
+
+      reply.cookie('sessionId', sessionId, {
+        path: '/',
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      })
+    }
 
     const createNewUser = await knex('users').insert({
       id: randomUUID(),
       name,
-      email
+      email,
+      session_id: sessionId
     }).returning('*')
 
     return reply.status(201).send(createNewUser[0])
