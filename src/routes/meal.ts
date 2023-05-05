@@ -3,6 +3,7 @@ import { checkSessionIdExists } from "../middlewares/check-session-id-exists";
 import { knex } from "../database";
 import { z } from "zod";
 import { randomUUID } from "crypto";
+import { format } from "date-fns";
 
 export async function mealsRoutes(app: FastifyInstance) {
   app.addHook('preHandler', async (request, reply) => {
@@ -25,17 +26,17 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       const { sessionId } = request.cookies
 
+      const newDate = format(new Date(date_time), "yyyy'-'MM'-'dd' 'HH:mm:ss")
+
       const user = await knex('users')
         .where('session_id', sessionId)
         .select()
-
-      // return { user }
 
       const meal = await knex('meals').insert({
         id: randomUUID(),
         name,
         description,
-        date_time: new Date(date_time),
+        date_time: newDate,
         is_on_diet,
         user_id: user[0].id
       }).returning('*')
