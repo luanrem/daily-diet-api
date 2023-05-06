@@ -149,4 +149,8 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       console.log(meal)
     })
+
+  app.delete('/all', async (request, reply) => {
+    await knex('meals').delete('*')
+  })
 }

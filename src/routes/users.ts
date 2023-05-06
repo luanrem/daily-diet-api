@@ -22,8 +22,14 @@ export async function usersRoutes(app: FastifyInstance) {
         .where('session_id', sessionId)
         .select()
 
+      const meals = await knex('meals')
+        .where({
+          user_id: user[0].id
+        })
+
       return {
-        user
+        user,
+        totalOfMeals: meals.length
       }
     })
 
@@ -67,4 +73,6 @@ export async function usersRoutes(app: FastifyInstance) {
 
     return reply.status(201).send(createNewUser[0])
   })
+
+
 }
